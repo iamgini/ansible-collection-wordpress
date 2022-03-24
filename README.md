@@ -1,3 +1,9 @@
 # Ansible Collection - ginigangadharan.wordpress
 
-Documentation for the collection.
+Collection Name: ginigangadharan.custom_modules
+
+## Install this collection locally:
+
+```shell
+$ ansible-galaxy collection install ginigangadharan.wordpress
+```
