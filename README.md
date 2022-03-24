@@ -1,2 +1,3 @@
-# ansible-collection-wordpress
-Ansible playbooks and roles for managing WordPress sites
+# Ansible Collection - ginigangadharan.wordpress
+
+Documentation for the collection.
