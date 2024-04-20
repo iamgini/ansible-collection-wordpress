@@ -1,0 +1,3 @@
+- name: Not supported version
+  ansible.builtin.debug:
+    msg: "Not supported OS"

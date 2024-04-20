@@ -1,0 +1,16 @@
+[local]
+localhost ansible_connection=local
+
+[wordpress]
+wp-101 ansible_host=192.168.57.159 ansible_port_old=2244
+
+[database]
+
+
+[all:vars]
+ansible_user=vagrant
+#ansible_password=vagrant
+#ansible_connection=ssh
+ansible_ssh_private_key_file= ~/.ssh/id_rsa
+#ansible_ssh_extra_args= ' -o StrictHostKeyChecking=no -o PreferredAuthentications=password '
+# ansible_ssh_extra_args= ' -o StrictHostKeyChecking=no '

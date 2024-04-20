@@ -1,9 +1,9 @@
-# Ansible Collection - ginigangadharan.wordpress
+# Ansible Collection - iamgini.wordpress
 
-Collection Name: ginigangadharan.custom_modules
+Collection Name: iamgini.wordpress
 
-## Install this collection locally:
+## Install this collection:
 
 ```shell
-$ ansible-galaxy collection install ginigangadharan.wordpress
+$ ansible-galaxy collection install iamgini.wordpress
 ```

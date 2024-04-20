@@ -1,0 +1,26 @@
+---
+- name: Set variables
+  ansible.builtin.set_fact:
+    root_group: root
+    nginx_conf_path: /etc/nginx/conf.d
+    nginx_conf_file_path: /etc/nginx/nginx.conf
+    nginx_mime_file_path: /etc/nginx/mime.types
+    nginx_pidfile: /run/nginx.pid
+    nginx_vhost_path: /etc/nginx/sites-enabled
+    nginx_default_vhost_path: /etc/nginx/sites-enabled/default
+    __nginx_user: "www-data"
+
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: true
+
+- name: Install Nginx
+  ansible.builtin.apt:
+    name: nginx
+    state: present
+
+- name: Start Nginx service
+  ansible.builtin.service:
+    name: nginx
+    state: started
+    enabled: true

@@ -1,0 +1,39 @@
+---
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: yes
+
+- name: Install UFW
+  ansible.builtin.apt:
+    name: ufw
+    state: present
+
+- name: Set UFW default policies
+  shell: |
+    sudo ufw default deny incoming
+    sudo ufw default allow outgoing
+  args:
+    executable: /bin/bash
+
+- name: Allow SSH, HTTP, and HTTPS through UFW
+  shell: |
+    sudo ufw allow ssh
+    sudo ufw allow http
+    sudo ufw allow https
+  args:
+    executable: /bin/bash
+
+- name: Enable UFW
+  community.general.ufw:
+    state: enabled
+    policy: allow
+
+# - name: Enable UFW
+#   shell: sudo ufw enable
+#   args:
+#     executable: /bin/bash
+
+- name: Check UFW status
+  shell: sudo ufw status
+  args:
+    executable: /bin/bash

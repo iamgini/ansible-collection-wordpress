@@ -1,0 +1,10 @@
+---
+# tasks file for ufw_install
+- block:
+    - name: Include OS based install
+      ansible.builtin.include_tasks:
+        file: "ufw_{{ ansible_os_family | default('not_supported') }}.yaml"
+  rescue:
+    - name: Not supported version
+      ansible.builtin.debug:
+        msg: "Not supported OS"

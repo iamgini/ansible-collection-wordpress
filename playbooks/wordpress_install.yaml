@@ -1,0 +1,13 @@
+---
+- name: Install and setup WordPress
+  hosts: wordpress
+  become: true
+  tasks:
+    - name: Install and configure ufw
+      ansible.builtin.include_role:
+        name: ufw_install
+      when: ansible_os_family == 'Debian'
+
+    - name: Install nginx
+      ansible.builtin.include_role:
+        name: nginx_install
