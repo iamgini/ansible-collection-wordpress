@@ -65,12 +65,12 @@
         # regexp: "DB_HOST"
         line: "define( 'DB_HOST', '{{ wordpress_database_server }}:{{ wordpress_database_port }}' );"
     # Remove later
-    - name: Configure Database host
-      ansible.builtin.lineinfile:
-        path: "{{ wordpress_project_dir }}/wp-config.php"
-        regexp: "^.*WP_DEBUG.*$"
-        # regexp: "DB_HOST"
-        line: "define( 'WP_DEBUG', true );"
+    # - name: Configure Database host
+    #   ansible.builtin.lineinfile:
+    #     path: "{{ wordpress_project_dir }}/wp-config.php"
+    #     regexp: "^.*WP_DEBUG.*$"
+    #     # regexp: "DB_HOST"
+    #     line: "define( 'WP_DEBUG', true );"
 
 
   rescue:
