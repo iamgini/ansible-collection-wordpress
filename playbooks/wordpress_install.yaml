@@ -2,12 +2,18 @@
 - name: Install and setup WordPress
   hosts: wordpress
   become: true
+  vars_files:
+    - vars/wp_install.yaml
   tasks:
-    - name: Install and configure ufw
-      ansible.builtin.include_role:
-        name: ufw_install
-      when: ansible_os_family == 'Debian'
+    # - name: Install and configure ufw
+    #   ansible.builtin.include_role:
+    #     name: ufw_install
+    #   when: ansible_os_family == 'Debian'
 
-    - name: Install nginx
+    # - name: Install nginx
+    #   ansible.builtin.include_role:
+    #     name: nginx_install
+
+    - name: Install WordPress
       ansible.builtin.include_role:
-        name: nginx_install
+        name: wordpress_install

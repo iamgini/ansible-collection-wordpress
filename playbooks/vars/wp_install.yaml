@@ -1,0 +1,11 @@
+wordpress_project_dir: /var/www/demosite
+wordpress_site_name: demosite
+wordpress_domain_name: beta.iamgini.com
+
+wordpress_database_server: your-database-host
+wordpress_database_port: 3306
+wordpress_database_name: wp_demosite
+wordpress_database_username: dbuser
+wordpress_database_password: password
+
+wordpress_version: 6.4

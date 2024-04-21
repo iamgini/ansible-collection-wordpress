@@ -1,2 +1,9 @@
 ---
 # tasks file for wordpress_install
+- name: Prepare Server
+  ansible.builtin.include_tasks:
+    file: prepare_environment.yaml
+
+- name: Configure WordPress
+  ansible.builtin.include_tasks:
+    file: install_wordpress.yaml

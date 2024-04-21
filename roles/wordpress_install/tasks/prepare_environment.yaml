@@ -1,0 +1,77 @@
+---
+# tasks file for wordpress_install
+- name: Install gnupg2
+  ansible.builtin.apt:
+    name:
+      - gnupg2
+    state: present
+
+- name: Add repository key
+  shell: wget -qO - https://packages.sury.org/php/apt.gpg | sudo apt-key add -
+
+- name: Add repository
+  shell: echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/sury-php.list
+
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: true
+
+- name: Install PHP
+  ansible.builtin.apt:
+    name:
+      - php8.0-common
+      - php8.0-cli
+      - php-mysql
+      - php-curl
+      - php-gd
+      - php-intl
+      - php-mbstring
+      - php-soap
+      - php-xml
+      - php-xmlrpc
+      - php-zip
+      - php-fpm
+    state: present
+
+- name: Create directory
+  ansible.builtin.file:
+    path: "{{ wordpress_project_dir }}"
+    state: directory
+    # owner: "{{ ansible_username }}"
+    # group: "{{ user_name }}"
+    mode: '0755'
+
+- name: Create nginx config - {{ wordpress_site_name }}
+  ansible.builtin.template:
+    src: "nginx.conf.j2"
+    dest: "/etc/nginx/sites-available/{{ wordpress_site_name }}.conf"
+    force: true
+
+- name: Create symlink - Enable new site
+  file:
+    src: "/etc/nginx/sites-available/{{ wordpress_site_name }}.conf"
+    dest: "/etc/nginx/sites-enabled/{{ wordpress_site_name }}.conf"
+    state: link
+
+- name: Create test file
+  ansible.builtin.copy:
+    content: "<?php phpinfo(); ?>"
+    dest: "{{ wordpress_project_dir }}/info.php"
+
+- name: Set ownership recursively
+  ansible.builtin.file:
+    path: "{{ wordpress_project_dir }}"
+    owner: "www-data"
+    group: "www-data"
+    recurse: true
+
+- name: Test configurations
+  ansible.builtin.shell: sudo nginx -t
+  failed_when: check_nginx.rc != 0
+  register: check_nginx
+
+- name: Start Nginx service
+  ansible.builtin.service:
+    name: nginx
+    state: restarted
+    enabled: true
