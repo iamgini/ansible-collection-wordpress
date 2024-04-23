@@ -5,7 +5,7 @@ localhost ansible_connection=local
 wp-101 ansible_host=192.168.57.159 ansible_port_old=2244
 
 [database]
-
+wp-101 ansible_host=192.168.57.159 ansible_port_old=2244
 
 [all:vars]
 ansible_user=vagrant

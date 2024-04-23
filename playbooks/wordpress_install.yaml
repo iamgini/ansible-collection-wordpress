@@ -1,18 +1,28 @@
 ---
+- name: Install MySQL server
+  hosts: database
+  become: true
+  vars_files:
+    - vars/wp_install.yaml
+  tasks:
+    - name: Install MySQL
+      ansible.builtin.include_role:
+        name: geerlingguy.mysql
+
 - name: Install and setup WordPress
   hosts: wordpress
   become: true
   vars_files:
     - vars/wp_install.yaml
   tasks:
-    # - name: Install and configure ufw
-    #   ansible.builtin.include_role:
-    #     name: ufw_install
-    #   when: ansible_os_family == 'Debian'
+    - name: Install and configure ufw
+      ansible.builtin.include_role:
+        name: ufw_install
+      when: ansible_os_family == 'Debian'
 
-    # - name: Install nginx
-    #   ansible.builtin.include_role:
-    #     name: nginx_install
+    - name: Install nginx
+      ansible.builtin.include_role:
+        name: nginx_install
 
     - name: Install WordPress
       ansible.builtin.include_role:

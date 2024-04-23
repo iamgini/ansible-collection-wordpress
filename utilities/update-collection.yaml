@@ -22,7 +22,7 @@
         chdir=../
     - name: Publish the collection.
       command: >
-        ansible-galaxy collection publish ./ginigangadharan-{{ collection_name }}-{{ tag }}.tar.gz --api-key $ANSIBLE_GALAXY_TOKEN --ignore-certs
+        ansible-galaxy collection publish ./iamgini-{{ collection_name }}-{{ tag }}.tar.gz --api-key $ANSIBLE_GALAXY_TOKEN --ignore-certs
         chdir=../
       register: galaxy_publish_status
     - name: Galaxy Publish Status

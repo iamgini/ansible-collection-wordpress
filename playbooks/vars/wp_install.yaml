@@ -1,11 +1,39 @@
 wordpress_project_dir: /var/www/demosite
 wordpress_site_name: demosite
-wordpress_domain_name: beta.iamgini.com
+wordpress_domain_name: alpha.iamgini.com
 
-wordpress_database_server: your-database-host
+wordpress_database_server: localhost
 wordpress_database_port: 3306
 wordpress_database_name: wp_demosite
 wordpress_database_username: dbuser
-wordpress_database_password: password
+wordpress_database_password: dbpassword
 
-wordpress_version: 6.4
+wordpress_version: 6.5.2
+
+mysql_user_home: /root
+mysql_user_name: root
+mysql_user_password: root
+
+mysql_root_home: /root
+mysql_root_username: root
+mysql_root_password: root
+
+mysql_enabled_on_startup: true
+
+# Databases.
+mysql_databases:
+  - name: wp_demosite
+    collation: utf8_general_ci
+    encoding: utf8
+    replicate: 1
+#   - name: example
+#     collation: utf8_general_ci
+#     encoding: utf8
+#     replicate: 1
+
+# Users.
+mysql_users:
+  - name: dbuser
+    host: localhost
+    password: dbpassword
+    priv: '{{ wordpress_database_name }}.*:ALL'

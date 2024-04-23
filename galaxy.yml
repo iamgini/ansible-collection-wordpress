@@ -1,7 +1,7 @@
 ---
-namespace: ginigangadharan
+namespace: iamgini
 name: wordpress
-version: 1.0.2
+version: 1.0.0
 readme: README.md
 authors:
   - Gineesh Madapparambath <net.gini@gmail.com>
@@ -17,10 +17,10 @@ tags:
   - website
 
 dependencies: {}
-repository: https://github.com/ginigangadharan/ansible-collection-wordpress
-documentation: https://github.com/ginigangadharan/ansible-collection-wordpress
-homepage: https://github.com/ginigangadharan/ansible-collection-wordpress
-issues: https://github.com/ginigangadharan/ansible-collection-wordpress
+repository: https://github.com/iamgini/ansible-collection-wordpress
+documentation: https://github.com/iamgini/ansible-collection-wordpress
+homepage: https://github.com/iamgini/ansible-collection-wordpress
+issues: https://github.com/iamgini/ansible-collection-wordpress
 
 #build_ignore:
 #- .gitignore
