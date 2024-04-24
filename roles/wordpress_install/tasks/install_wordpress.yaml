@@ -28,49 +28,50 @@
     - name: Copy WordPress files to destination
       ansible.builtin.copy:
         src: /tmp/wordpress/
-        dest: "{{ wordpress_project_dir }}/"
+        dest: "{{ web_projects_dir }}/{{ wordpress_site_name }}/"
         remote_src: true
         force: true
 
     - name: Set ownership recursively
       ansible.builtin.file:
-        path: "{{ wordpress_project_dir }}"
+        path: "{{ web_projects_dir }}/{{ wordpress_site_name }}"
         owner: "www-data"
         group: "www-data"
         recurse: true
 
     - name: Configure Database
       ansible.builtin.lineinfile:
-        path: "{{ wordpress_project_dir }}/wp-config.php"
+        path: "{{ web_projects_dir }}/{{ wordpress_site_name }}/wp-config.php"
         regexp: "^.*DB_NAME.*$"
         line: "define( 'DB_NAME', '{{ wordpress_database_name }}' );"
 
     - name: Configure Database user
       ansible.builtin.lineinfile:
-        path: "{{ wordpress_project_dir }}/wp-config.php"
+        path: "{{ web_projects_dir }}/{{ wordpress_site_name }}/wp-config.php"
         regexp: "^.*DB_USER.*$"
         line: "define( 'DB_USER', '{{ wordpress_database_username }}' );"
 
     - name: Configure Database password
       no_log: true
       ansible.builtin.lineinfile:
-        path: "{{ wordpress_project_dir }}/wp-config.php"
+        path: "{{ web_projects_dir }}/{{ wordpress_site_name }}/wp-config.php"
         regexp: "^.*DB_PASSWORD.*$"
         line: "define( 'DB_PASSWORD', '{{ wordpress_database_password }}' );"
 
     - name: Configure Database host
       ansible.builtin.lineinfile:
-        path: "{{ wordpress_project_dir }}/wp-config.php"
+        path: "{{ web_projects_dir }}/{{ wordpress_site_name }}/wp-config.php"
         regexp: "^.*DB_HOST.*$"
         # regexp: "DB_HOST"
         line: "define( 'DB_HOST', '{{ wordpress_database_server }}:{{ wordpress_database_port }}' );"
     # Remove later
-    - name: Configure Database host
+    - name: Configure DEBUG
       ansible.builtin.lineinfile:
-        path: "{{ wordpress_project_dir }}/wp-config.php"
+        path: "{{ web_projects_dir }}/{{ wordpress_site_name }}/wp-config.php"
         regexp: "^.*WP_DEBUG.*$"
         # regexp: "DB_HOST"
         line: "define( 'WP_DEBUG', true );"
+      when: wp_debug | default(false) | bool == true
 
 
   rescue:
@@ -79,7 +80,7 @@
         path: /tmp/wordpress-latest.tar.gz
         state: absent
 
-    - name: Remove file
+    - name: Remove directory
       ansible.builtin.file:
         path: /tmp/wordpress
         state: absent

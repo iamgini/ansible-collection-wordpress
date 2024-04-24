@@ -35,7 +35,7 @@
 
 - name: Create directory
   ansible.builtin.file:
-    path: "{{ wordpress_project_dir }}"
+    path: "{{ web_projects_dir }}/{{ wordpress_site_name }}"
     state: directory
     # owner: "{{ ansible_username }}"
     # group: "{{ user_name }}"
@@ -56,11 +56,11 @@
 - name: Create test file
   ansible.builtin.copy:
     content: "<?php phpinfo(); ?>"
-    dest: "{{ wordpress_project_dir }}/info.php"
+    dest: "{{ web_projects_dir }}/{{ wordpress_site_name }}/info.php"
 
 - name: Set ownership recursively
   ansible.builtin.file:
-    path: "{{ wordpress_project_dir }}"
+    path: "{{ web_projects_dir }}/{{ wordpress_site_name }}"
     owner: "www-data"
     group: "www-data"
     recurse: true

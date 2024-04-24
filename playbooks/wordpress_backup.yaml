@@ -1,0 +1,11 @@
+---
+- name: WordPress Backup
+  hosts: wordpress
+  become: true
+  vars_files:
+    - vars/var_wp_general.yaml
+    - vars/var_wp_backup.yaml
+  tasks:
+    - name: Backup WordPress
+      ansible.builtin.include_role:
+        name: wordpress_backup

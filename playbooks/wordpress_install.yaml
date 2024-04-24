@@ -3,7 +3,8 @@
   hosts: database
   become: true
   vars_files:
-    - vars/wp_install.yaml
+    - vars/var_wp_general.yaml
+    - vars/var_wp_install.yaml
   tasks:
     - name: Install MySQL
       ansible.builtin.include_role:
@@ -13,7 +14,8 @@
   hosts: wordpress
   become: true
   vars_files:
-    - vars/wp_install.yaml
+    - vars/var_wp_general.yaml
+    - vars/var_wp_install.yaml
   tasks:
     - name: Install and configure ufw
       ansible.builtin.include_role:

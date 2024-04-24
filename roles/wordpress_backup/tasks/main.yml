@@ -1,2 +1,71 @@
 ---
 # tasks file for wordpress-backup
+
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: true
+
+- name: Install dependancies
+  ansible.builtin.apt:
+    name:
+      - default-mysql-client
+      - python3-pip
+    state: present
+
+- name: Set date_time
+  ansible.builtin.set_fact:
+    date_time_string: "{{ lookup('pipe','date +%Y-%m-%d_%H-%M-%S') | string }}"
+
+- name: Set backup file names
+  ansible.builtin.set_fact:
+    wp_data_backup_file: "/tmp/{{ wordpress_site_name }}-wp-data_{{ date_time_string }}.tar.gz"
+    wp_db_backup_file: "/tmp/{{ wordpress_site_name }}-sql-data_{{ date_time_string }}.gz"
+
+
+- name: Backup site directory
+  ansible.builtin.shell: "tar -cv {{ wordpress_site_name }} | gzip > {{ wp_data_backup_file }}"
+  args:
+    chdir: "{{ web_projects_dir }}"
+  register: backup_status
+  failed_when: backup_status.rc != 0
+
+# --- not using due to Python dependancies ---
+# - name: Create MySQL backup
+#   # no_log: true
+#   community.mysql.mysql_db:
+#     login_user: "{{ wordpress_database_username }}"
+#     login_password: "{{ wordpress_database_password }}"
+#     login_host: "{{ wordpress_database_server }}"
+#     login_port: "{{ wordpress_database_port }}"
+#     name: "{{ wordpress_database_name }}"
+#     target: "/tmp/{{ wordpress_site_name }}.sql.gz"
+#     state: dump
+
+- block:
+    - name: Create credential file
+      no_log: true
+      ansible.builtin.template:
+        src: mysql.cnf.j2
+        dest: "~/.mysqldump.cnf"
+        mode: "0400"
+
+    - name: Create MySQL backup
+      ansible.builtin.shell: "mysqldump --defaults-extra-file=~/.mysqldump.cnf -h {{ wordpress_database_server }} -P {{ wordpress_database_port }} {{ wordpress_database_name }} | gzip > {{ wp_db_backup_file }}"
+      register: mysql_backup_status
+      failed_when: mysql_backup_status.rc != 0
+
+    - name: Fetch backup files to localhost
+      ansible.builtin.fetch:
+        src: "{{ item }}"
+        dest: "{{ wordpress_backup_dir }}/"
+        flat: true
+      with_items:
+        - "{{ wp_db_backup_file }}"
+        - "{{ wp_data_backup_file }}"
+      register: fetch_status
+
+  always:
+    - name: Remove file
+      ansible.builtin.file:
+        path: "~/.mysqldump.cnf"
+        state: absent

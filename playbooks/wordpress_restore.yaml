@@ -1,0 +1,11 @@
+---
+- name: WordPress Restore
+  hosts: wordpress
+  become: true
+  vars_files:
+    - vars/var_wp_general.yaml
+    - vars/var_wp_restore.yaml
+  tasks:
+    - name: Restore WordPress
+      ansible.builtin.include_role:
+        name: wordpress_restore

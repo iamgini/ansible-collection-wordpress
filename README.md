@@ -13,7 +13,7 @@ $ ansible-galaxy collection install iamgini.wordpress
 Configure variables in `playbooks/vars/wp_install.yaml` (Encrypt the sensitive content as required)
 
 ```yaml
-wordpress_project_dir: /var/www/demosite
+web_projects_dir: /var/www/demosite
 wordpress_site_name: demosite
 wordpress_domain_name: beta.iamgini.com
 
@@ -28,6 +28,23 @@ wordpress_version: 6.4
 
 ```shell
 $ ansible-playbook playbooks/wordpress_install.yaml \
+    -i hosts-vagrant \
+    -e "wp_debug=true"
+```
+
+Passing variables from external file. (For example, using managed database and details are coming from `~/.config/wp-demosite.yaml`)
+
+```shell
+$ ansible-playbook playbooks/wordpress_install.yaml \
+    -i hosts-upcloud \
+    -e @~/.config/wp-demosite.yaml \
+    -e "wp_debug=true"
+```
+
+## Backup WordPress
+
+```shell
+$ ansible-playbook playbooks/wordpress_backup.yaml \
     -i hosts-upcloud \
     -e @~/.config/wp-demosite.yaml
 ```

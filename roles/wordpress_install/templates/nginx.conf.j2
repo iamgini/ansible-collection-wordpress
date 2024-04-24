@@ -2,7 +2,7 @@ server {
     listen 80;
     listen [::]:80;
 
-    root {{ wordpress_project_dir }};
+    root {{ web_projects_dir }}/{{ wordpress_site_name }};
     index index.php index.html index.htm;
 
     server_name {{ wordpress_domain_name }} {{ ansible_host }};

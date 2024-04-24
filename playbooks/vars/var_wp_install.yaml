@@ -1,13 +1,3 @@
-wordpress_project_dir: /var/www/demosite
-wordpress_site_name: demosite
-wordpress_domain_name: alpha.iamgini.com
-
-wordpress_database_server: localhost
-wordpress_database_port: 3306
-wordpress_database_name: wp_demosite
-wordpress_database_username: dbuser
-wordpress_database_password: dbpassword
-
 wordpress_version: 6.5.2
 
 mysql_user_home: /root

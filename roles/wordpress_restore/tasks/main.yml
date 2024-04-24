@@ -1,2 +1,112 @@
 ---
 # tasks file for wordpress_restore
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: true
+
+- name: Install dependancies
+  ansible.builtin.apt:
+    name:
+      - default-mysql-client
+      - python3-pip
+    state: present
+
+- name: Copy backup files to nodes
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "/tmp/{{ item | basename }}"
+    force: true
+  with_items:
+    - "{{ wordpress_backup_data_file }}"
+    - "{{ wordpress_backup_db_file }}"
+
+- block:
+    - name: Create credential file
+      no_log: true
+      ansible.builtin.template:
+        src: mysql.cnf.j2
+        dest: "~/.mysql.cnf"
+        mode: "0400"
+
+    - name: Restore MySQL data
+      ansible.builtin.shell: "gunzip < {{ wordpress_backup_db_file }} | mysql --defaults-extra-file=~/.mysql.cnf  -h {{ wordpress_database_server }} -P {{ wordpress_database_port }} {{ wordpress_database_name }}"
+      register: mysql_restore_status
+      failed_when: mysql_restore_status.rc != 0
+
+    - name: Remove existing directory - {{ web_projects_dir }}/{{ wordpress_site_name }}
+      ansible.builtin.file:
+        path: "{{ web_projects_dir }}/{{ wordpress_site_name }}"
+        state: absent
+
+    # - name: Create directory - {{ web_projects_dir }}/{{ wordpress_site_name }}
+    #   ansible.builtin.file:
+    #     path: "{{ web_projects_dir }}/{{ wordpress_site_name }}"
+    #     state: directory
+    #     mode: '0755'
+
+    - name: Extract {{ wordpress_backup_data_file | basename }}
+      ansible.builtin.unarchive:
+        src: "/tmp/{{ wordpress_backup_data_file | basename }}"
+        dest: "{{ web_projects_dir }}/"
+
+    - name: Set ownership recursively
+      ansible.builtin.file:
+        path: "{{ web_projects_dir }}/{{ wordpress_site_name }}"
+        owner: "www-data"
+        group: "www-data"
+        recurse: true
+
+
+    - name: Configure Database
+      ansible.builtin.lineinfile:
+        path: "{{ web_projects_dir }}/{{ wordpress_site_name }}/wp-config.php"
+        regexp: "^.*DB_NAME.*$"
+        line: "define( 'DB_NAME', '{{ wordpress_database_name }}' );"
+
+    - name: Configure Database user
+      ansible.builtin.lineinfile:
+        path: "{{ web_projects_dir }}/{{ wordpress_site_name }}/wp-config.php"
+        regexp: "^.*DB_USER.*$"
+        line: "define( 'DB_USER', '{{ wordpress_database_username }}' );"
+
+    - name: Configure Database password
+      no_log: true
+      ansible.builtin.lineinfile:
+        path: "{{ web_projects_dir }}/{{ wordpress_site_name }}/wp-config.php"
+        regexp: "^.*DB_PASSWORD.*$"
+        line: "define( 'DB_PASSWORD', '{{ wordpress_database_password }}' );"
+
+    - name: Configure Database host
+      ansible.builtin.lineinfile:
+        path: "{{ web_projects_dir }}/{{ wordpress_site_name }}/wp-config.php"
+        regexp: "^.*DB_HOST.*$"
+        # regexp: "DB_HOST"
+        line: "define( 'DB_HOST', '{{ wordpress_database_server }}:{{ wordpress_database_port }}' );"
+    # Remove later
+    - name: Configure DEBUG
+      ansible.builtin.lineinfile:
+        path: "{{ web_projects_dir }}/{{ wordpress_site_name }}/wp-config.php"
+        regexp: "^.*WP_DEBUG.*$"
+        # regexp: "DB_HOST"
+        line: "define( 'WP_DEBUG', true );"
+      when: wp_debug | default(false) | bool == true
+
+    - name: Configure WP_HOME
+      ansible.builtin.lineinfile:
+        path: "{{ web_projects_dir }}/{{ wordpress_site_name }}/wp-config.php"
+        regexp: "^.*WP_HOME.*$"
+        insertbefore: "^.*DB_NAME.*$"
+        line: "define( 'WP_HOME', '{{ wordpress_http_method }}://{{ wordpress_domain_name }}' );"
+
+    - name: Configure WP_SITEURL
+      ansible.builtin.lineinfile:
+        path: "{{ web_projects_dir }}/{{ wordpress_site_name }}/wp-config.php"
+        regexp: "^.*WP_SITEURL.*$"
+        insertbefore: "^.*DB_NAME.*$"
+        line: "define( 'WP_SITEURL', '{{ wordpress_http_method }}://{{ wordpress_domain_name }}' );"
+
+  always:
+    - name: Remove file
+      ansible.builtin.file:
+        path: "~/.mysql.cnf"
+        state: absent
