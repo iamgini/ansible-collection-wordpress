@@ -37,8 +37,16 @@ Passing variables from external file. (For example, using managed database and d
 ```shell
 $ ansible-playbook playbooks/wordpress_install.yaml \
     -i hosts-upcloud \
-    -e @~/.config/wp-demosite.yaml \
+    -e @wp-demosite.yaml \
     -e "wp_debug=true"
+
+# or customize the variables
+$ ansible-playbook playbooks/wordpress_install.yaml \
+    -i hosts-upcloud  \
+    -e "wp_debug=true" \
+    -e "wordpress_database_server=10.1.10.3" \
+    -e "wordpress_domain_name=beta.iamgini.com" \
+    -e "wordpress_http_method=https"
 ```
 
 ## Backup WordPress
@@ -47,4 +55,12 @@ $ ansible-playbook playbooks/wordpress_install.yaml \
 $ ansible-playbook playbooks/wordpress_backup.yaml \
     -i hosts-upcloud \
     -e @~/.config/wp-demosite.yaml
+```
+
+## Restore WordPress
+
+```shell
+$ ansible-playbook playbooks/wordpress_restore.yaml \
+    -i hosts-upcloud \
+    -e @wp-demosite.yaml
 ```

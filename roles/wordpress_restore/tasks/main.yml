@@ -105,8 +105,8 @@
         insertbefore: "^.*DB_NAME.*$"
         line: "define( 'WP_SITEURL', '{{ wordpress_http_method }}://{{ wordpress_domain_name }}' );"
 
-  always:
-    - name: Remove file
-      ansible.builtin.file:
-        path: "~/.mysql.cnf"
-        state: absent
+  # always:
+  #   - name: Remove file
+  #     ansible.builtin.file:
+  #       path: "~/.mysql.cnf"
+  #       state: absent

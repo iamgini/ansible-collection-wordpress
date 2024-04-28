@@ -23,7 +23,7 @@ mysql_databases:
 
 # Users.
 mysql_users:
-  - name: dbuser
-    host: localhost
-    password: dbpassword
+  - name: "{{ wordpress_database_username | default('dbuser') }}"
+    host: "{{ wordpress_database_server | default('localhost') }}"
+    password: "{{ wordpress_database_password | default('dbpassword') }}"
     priv: '{{ wordpress_database_name }}.*:ALL'

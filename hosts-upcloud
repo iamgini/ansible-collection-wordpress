@@ -2,10 +2,10 @@
 localhost ansible_connection=local
 
 [wordpress]
-wp-upcloud-101 ansible_host=94.237.76.159 ansible_user=root
+wp-upcloud-101 ansible_host=95.111.196.189 ansible_user=root
 
 [database]
-
+# db-upcloud-101 ansible_host=94.237.78.162 ansible_user=root
 
 [all:vars]
 ansible_user=vagrant
