@@ -1,8 +1,0 @@
-wordpress_domain_name: beta.iamgini.com
-wordpress_http_method: 'https'
-
-wordpress_database_server: public-wp-db1-ayepcgeehddp.db.upclouddatabases.com
-wordpress_database_port: 11569
-wordpress_database_name: wp_demosite
-wordpress_database_username: wp_demosite_dbuser
-wordpress_database_password: gOJPA1TXhl$wx
