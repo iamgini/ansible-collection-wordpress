@@ -2,5 +2,5 @@
 test/results
 roles/geerlingguy.*
 wp-demosite.yaml
-# wp-demosite-uc-db.yaml
-# wp-demosite-upcloud.yaml
+wp-demosite-uc-db.yaml
+wp-demosite-upcloud.yaml
