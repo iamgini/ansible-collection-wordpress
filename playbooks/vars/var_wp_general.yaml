@@ -1,12 +1,2 @@
 ansible_python_interpreter: /usr/bin/python3
-
 web_projects_dir: /var/www
-wordpress_site_name: demosite
-wordpress_domain_name: alpha.iamgini.com
-wordpress_http_method: 'http'
-
-wordpress_database_server: localhost
-wordpress_database_port: 3306
-wordpress_database_name: wp_demosite
-wordpress_database_username: dbuser
-wordpress_database_password: dbpassword

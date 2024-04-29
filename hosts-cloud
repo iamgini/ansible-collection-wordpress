@@ -7,6 +7,17 @@ wp-upcloud-101 ansible_host=95.111.219.140 ansible_user=root
 [database]
 # db-upcloud-101 ansible_host=94.237.78.162 ansible_user=root
 
+[wordpress:vars]
+wordpress_site_name=demosite
+wordpress_domain_name=beta.iamgini.com
+wordpress_ssl_admin_email=admin@iamgini.com
+wordpress_http_method='http'
+wordpress_database_server=db.example.com
+wordpress_database_port=3306
+wordpress_database_name=wp-db
+wordpress_database_username=dbuser
+wordpress_database_password=dbpassword
+
 [all:vars]
 ansible_user=vagrant
 #ansible_password=vagrant

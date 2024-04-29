@@ -7,3 +7,7 @@
 - name: Configure WordPress
   ansible.builtin.include_tasks:
     file: install_wordpress.yaml
+
+- name: Configure SSL
+  ansible.builtin.include_tasks:
+    file: configure_ssl.yaml

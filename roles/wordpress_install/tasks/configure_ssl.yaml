@@ -1,0 +1,10 @@
+- block:
+    - name: Generate SSL using certbot
+      ansible.builtin.shell: "certbot --nginx -n --register-unsafely-without-email --agree-tos -m {{ wordpress_ssl_admin_email | default('admin@local') }} -d {{ wordpress_domain_name }}"
+      register: ssl_status
+
+    - name: SSL Status
+      ansible.builtin.debug:
+        msg: "{{ ssl_status.stdout_lines }}"
+
+  # rescue:

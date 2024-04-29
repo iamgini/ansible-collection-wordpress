@@ -26,6 +26,10 @@
       ansible.builtin.include_role:
         name: nginx_install
 
+    - name: Install certbot
+      ansible.builtin.include_role:
+        name: certbot_install
+
     - name: Install WordPress
       ansible.builtin.include_role:
         name: wordpress_install
