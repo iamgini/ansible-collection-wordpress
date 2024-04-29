@@ -1,4 +1,4 @@
 # local directory
 wordpress_backup_dir: /tmp
-wordpress_backup_data_file: "/tmp/demosite-wp-data_2024-04-28_22-50-32.tar.gz"
-wordpress_backup_db_file: "/tmp/demosite-sql-data_2024-04-28_22-50-32.gz"
+wordpress_backup_data_file: "/tmp/demosite-wp-data_2024-04-29_13-23-45.tar.gz"
+wordpress_backup_db_file: "/tmp/demosite-sql-data_2024-04-29_13-23-45.gz"

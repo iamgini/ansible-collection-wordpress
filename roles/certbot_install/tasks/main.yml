@@ -1,0 +1,12 @@
+---
+# tasks file for certbot_install
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: true
+
+- name: Install Certbot
+  ansible.builtin.apt:
+    name:
+      - certbot
+      - python3-certbot-nginx
+    state: present
